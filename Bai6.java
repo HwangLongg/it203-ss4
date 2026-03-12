@@ -1,22 +1,82 @@
+
+
+import java.time.LocalDate;
+import java.util.List;
+
 public class Bai6 {
-    public static void main(String[] args) {
-        String danhGia = "Quyển sách này rất tệ, nội dung dở quá.";
-        String[] blacklist = {"tệ", "dở"};
 
-        // Duyệt từng từ xấu trong danh sách đen
-        for (int i = 0; i < blacklist.length; i++) {
-            String tuXau = blacklist[i];
+    static class User {
+        private String email;
+        private LocalDate birthDate;
 
-            // Tạo chuỗi **** có độ dài bằng từ xấu
-            String sao = "";
-            for (int j = 0; j < tuXau.length(); j++) {
-                sao += "*";
-            }
-
-            // Thay thế từ xấu bằng sao
-            danhGia = danhGia.replace(tuXau, sao);
+        public User(String email, LocalDate birthDate) {
+            this.email = email;
+            this.birthDate = birthDate;
         }
 
-        System.out.println("Kết quả: " + danhGia);
+        public String getEmail() {
+            return email;
+        }
+
+        public LocalDate getBirthDate() {
+            return birthDate;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setBirthDate(LocalDate birthDate) {
+            this.birthDate = birthDate;
+        }
+    }
+
+    static class UserProfile {
+        private String email;
+        private LocalDate birthDate;
+
+        public UserProfile(String email, LocalDate birthDate) {
+            this.email = email;
+            this.birthDate = birthDate;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public LocalDate getBirthDate() {
+            return birthDate;
+        }
+    }
+
+    public User updateProfile(User existingUser, UserProfile newProfile, List<User> allUsers) {
+
+        if (existingUser == null || newProfile == null) {
+            return null;
+        }
+
+        if (newProfile.getBirthDate() != null &&
+                newProfile.getBirthDate().isAfter(LocalDate.now())) {
+            return null;
+        }
+
+        if (newProfile.getEmail() != null && allUsers != null) {
+            for (User user : allUsers) {
+                if (user != existingUser &&
+                        newProfile.getEmail().equals(user.getEmail())) {
+                    return null;
+                }
+            }
+        }
+
+        if (newProfile.getEmail() != null) {
+            existingUser.setEmail(newProfile.getEmail());
+        }
+
+        if (newProfile.getBirthDate() != null) {
+            existingUser.setBirthDate(newProfile.getBirthDate());
+        }
+
+        return existingUser;
     }
 }
