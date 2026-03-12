@@ -1,19 +1,45 @@
-import java.util.regex.*;
+
 
 public class Bai5 {
-    public static void main(String[] args) {
-        String log = "2024-05-20 | User: Long | Action: BORROW | BookID: BK123";
 
-        // Tạo các "cái bẫy" () để hứng dữ liệu
-        String regex = "(\\d{4}-\\d{2}-\\d{2}) \\| User: (\\w+) \\| Action: (\\w+) \\| BookID: (\\w+)";
+    enum Role {
+        ADMIN, MODERATOR, USER
+    }
 
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(log);
+    enum Action {
+        DELETE_USER, LOCK_USER, VIEW_PROFILE
+    }
 
-        if (m.find()) {
-            System.out.println("Ngày: " + m.group(1)); // Cái bẫy 1
-            System.out.println("Tên: " + m.group(2));  // Cái bẫy 2
-            System.out.println("Hành động: " + m.group(3)); // Cái bẫy 3
+    static class User {
+        private Role role;
+
+        public User(Role role) {
+            this.role = role;
+        }
+
+        public Role getRole() {
+            return role;
+        }
+    }
+
+    public boolean canPerformAction(User user, Action action) {
+
+        if (user == null || action == null) {
+            return false;
+        }
+
+        switch (user.getRole()) {
+            case ADMIN:
+                return true;
+
+            case MODERATOR:
+                return action == Action.LOCK_USER || action == Action.VIEW_PROFILE;
+
+            case USER:
+                return action == Action.VIEW_PROFILE;
+
+            default:
+                return false;
         }
     }
 }
