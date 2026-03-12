@@ -1,19 +1,19 @@
+
+
 public class Bai3 {
-    public static void main(String[] args) {
-        // StringBuilder đơn giản là cái túi chứa chuỗi
-        StringBuilder nhatKy = new StringBuilder();
 
-        nhatKy.append("BÁO CÁO NGÀY: 2026-01-28\n");
+    public String processEmail(String email) {
 
-        String[] maSach = {"BK001", "BK002", "BK003"};
-        String[] ngayMuon = {"20/01", "21/01", "22/01"};
-
-        for (int i = 0; i < maSach.length; i++) {
-            // Thay vì dùng +, dùng append để nối vào túi
-            nhatKy.append("Mã: ").append(maSach[i]);
-            nhatKy.append(" | Ngày: ").append(ngayMuon[i]).append("\n");
+        if (email == null || !email.contains("@")) {
+            throw new IllegalArgumentException("Email không hợp lệ");
         }
 
-        System.out.println(nhatKy.toString());
+        int atIndex = email.indexOf("@");
+
+        if (atIndex == email.length() - 1) {
+            throw new IllegalArgumentException("Email không có tên miền");
+        }
+
+        return email.toLowerCase();
     }
 }
